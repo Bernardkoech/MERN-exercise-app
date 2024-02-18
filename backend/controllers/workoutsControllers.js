@@ -4,11 +4,14 @@ import Workout from "../models/Workout.js";
 export const getWorkouts = async (req, res) => {
   try {
     const workouts = await Workout.find({}).sort({ createdAt: -1 });
+
+    res.header("Access-Control-Allow-Origin", "*");
     // Sending back the response with data in it
     return res.status(200).json({
       count: workouts.length,
       data: workouts,
     });
+
   } catch (error) {
     console.log(error.message);
     return res.status(500).send({ message: error.message });

@@ -12,9 +12,9 @@ app.use(express.json());
 app.use("/api/workouts", workoutRoutes);
 app.use(
   cors({
-    origin: "http://localhost:5555",
+    origin: "http://localhost:5173",
     methods: ["GET", "PATCH", "POST", "DELETE"],
-    allowedHeaders: ["Content-Type"],
+    allowedHeaders: "*",
   })
 );
 
