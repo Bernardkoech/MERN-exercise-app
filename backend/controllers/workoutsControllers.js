@@ -49,6 +49,7 @@ export const createWorkout = async (req, res) => {
     };
 
     const workout = await Workout.create(newWorkout);
+    
     return res.status(201).send(workout);
   } catch (error) {
     console.log(error.message);
