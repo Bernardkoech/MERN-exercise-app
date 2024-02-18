@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import WorkoutDetails from "../components/WorkoutDetails";
 
 const Homepage = () => {
   const [workouts, setWorkouts] = useState(null);
@@ -17,7 +18,9 @@ const Homepage = () => {
     <div className="bg-light">
       <div className="workouts">
         {workouts &&
-          workouts.map((workout) => <p key={workout._id}>{workout.title}</p>)}
+          workouts.map((workout) => (
+            <WorkoutDetails key={workout._id} workout={workout} />
+          ))}
       </div>
     </div>
   );
