@@ -41,7 +41,7 @@ const Home = () => {
                                 <Card className="shadow-sm bg-dark text-light">
                                     <Card.Body>
                                         <Card.Title>{workout.title}</Card.Title>
-                                        <Card.Text>Some quick example text to build on the card.</Card.Text>
+                                        <Card.Text></Card.Text>
                                     </Card.Body>
                                 </Card>
                             </Link>
