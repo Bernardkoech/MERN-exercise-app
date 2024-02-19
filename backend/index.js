@@ -10,13 +10,7 @@ const port = process.env.PORT;
 
 app.use(express.json());
 app.use("/api/workouts", workoutRoutes);
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    methods: ["GET", "PATCH", "POST", "DELETE"],
-    allowedHeaders: "*",
-  })
-);
+
 
 mongoose
   .connect(process.env.MONGODB_URL)
