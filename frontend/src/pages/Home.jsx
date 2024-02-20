@@ -24,6 +24,32 @@ const Home = () => {
       });
   }, []);
 
+  const calculateTimeAgo = (createdAt) => {
+    const currentTime = new Date();
+    const createdTime = new Date(createdAt);
+    const diffMs = currentTime - createdTime;
+    const diffSeconds = Math.floor(diffMs / 1000);
+    const diffMinutes = Math.floor(diffSeconds / 60);
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+    const diffWeeks = Math.floor(diffDays / 7);
+    const diffYears = Math.floor(diffDays / 365);
+
+    if (diffYears > 0) {
+      return `${diffYears} year${diffYears > 1 ? "s" : ""} ago`;
+    } else if (diffWeeks > 0) {
+      return `${diffWeeks} week${diffWeeks > 1 ? "s" : ""} ago`;
+    } else if (diffDays > 0) {
+      return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
+    } else if (diffHours > 0) {
+      return `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`;
+    } else if (diffMinutes > 0) {
+      return `${diffMinutes} minute${diffMinutes > 1 ? "s" : ""} ago`;
+    } else {
+      return `${diffSeconds} second${diffSeconds > 1 ? "s" : ""} ago`;
+    }
+  };
+
   return (
     <Container>
       <h1 className="text-center">Workouts</h1>
@@ -42,7 +68,7 @@ const Home = () => {
                 <Card.Body>
                   <Card.Title>{workout.title}</Card.Title>
                   <Card.Text>
-                    Reps: {workout.reps}, Load: {workout.load}
+                    Created {calculateTimeAgo(workout.createdAt)}
                   </Card.Text>
                 </Card.Body>
               </Card>
