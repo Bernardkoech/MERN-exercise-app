@@ -1,7 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 import { Container, Button, Modal, Alert } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa";
+
 
 const DeleteWorkout = () => {
   const { id } = useParams();
@@ -26,6 +28,9 @@ const DeleteWorkout = () => {
 
   return (
     <Container>
+    <Link to="/" className="btn btn-outline-primary mb-3">
+        <FaArrowLeft /> Back
+      </Link>
       <h1 className="text-center mt-4">Delete Workout</h1>
       {/* Display alert when workout is deleted successfully */}
       {showAlert && (
@@ -34,10 +39,12 @@ const DeleteWorkout = () => {
         </Alert>
       )}
       <div className="text-center mt-3">
-        <Button variant="danger" onClick={() => setShowModal(true)}>
+
+        <Button variant="outline-danger" onClick={() => setShowModal(true)}>
           Delete Workout
         </Button>
       </div>
+      <br />
 
       {/* Confirmation Modal */}
       <Modal show={showModal} onHide={() => setShowModal(false)}>
