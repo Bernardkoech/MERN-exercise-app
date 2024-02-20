@@ -10,6 +10,7 @@ const port = process.env.PORT;
 
 app.use(express.json());
 app.use("/api/workouts", workoutRoutes);
+app.use(express.static("dist"));
 
 
 mongoose
