@@ -1,13 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Container, Row, Col, Card } from "react-bootstrap"; // Import Bootstrap components
-import LoadingSpinner from "../components/LoadingSpinner";
+import { Container, Row, Col, Card, Spinner, Alert } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa";
 
 const Home = () => {
   const [workouts, setWorkouts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     setLoading(true);
@@ -18,38 +18,39 @@ const Home = () => {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
+        setError("Error fetching data. Please try again later.");
         setLoading(false);
       });
   }, []);
 
   return (
     <Container>
-    <h1 className="text-center">Workouts</h1>
-            <div className="d-flex justify-content-end mb-3">
-                <Link to="/workouts/create" className="btn btn-outline-dark">
-                    <FaPlus /> Create Workout
-                </Link>
-            </div>
-            {loading ? (
-                <LoadingSpinner />
-            ) : (
-                <Row xs={1} md={2} lg={3} xl={4} className="g-4">
-                    {workouts.map((workout, index) => (
-                        <Col key={index}>
-                            <Link to={`/workouts/details/${workout._id}`} className="text-decoration-none">
-                                <Card className="shadow-sm bg-dark text-light">
-                                    <Card.Body>
-                                        <Card.Title>{workout.title}</Card.Title>
-                                        <Card.Text></Card.Text>
-                                    </Card.Body>
-                                </Card>
-                            </Link>
-                        </Col>
-                    ))}
-                </Row>
-            )}
-        </Container>
+      <h1 className="text-center">Workouts</h1>
+      <div className="d-flex justify-content-end mb-3">
+        <Link to="/workouts/create" className="btn btn-outline-dark">
+          <FaPlus /> Create Workout
+        </Link>
+      </div>
+      {loading && <Spinner animation="border" />}
+      {error && <Alert variant="danger">{error}</Alert>}
+      <Row xs={1} md={2} lg={3} xl={4} className="g-4">
+        {workouts.map((workout, index) => (
+          <Col key={index}>
+            <Link to={`/workouts/details/${workout._id}`} className="text-decoration-none">
+              <Card className="shadow-sm bg-dark text-light">
+                <Card.Body>
+                  <Card.Title>{workout.title}</Card.Title>
+                  <Card.Text>
+                    Reps: {workout.reps}, Load: {workout.load}
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Link>
+          </Col>
+        ))}
+      </Row>
+    </Container>
   );
 };
 

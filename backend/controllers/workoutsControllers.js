@@ -49,7 +49,7 @@ export const createWorkout = async (req, res) => {
     };
 
     const workout = await Workout.create(newWorkout);
-    
+
     return res.status(201).send(workout);
   } catch (error) {
     console.log(error.message);
@@ -58,22 +58,37 @@ export const createWorkout = async (req, res) => {
 };
 
 /*  Update an existing workout */
+/* Update an existing workout */
 export const updateWorkout = async (req, res) => {
   try {
-    if (!req.body.title || !req.body.reps || !req.body.load) {
+    const { id } = req.params;
+    const { title, reps, load } = req.body;
+
+    // Check if any of the fields is missing
+    if (!title || reps === undefined || load === undefined) {
       return res.status(400).send({ message: "Fill all fields" });
     }
-    const { id } = req.params;
-    const result = await Workout.findByIdAndUpdate(id, req.body);
+
+    // Update only the provided fields
+    const updateFields = {};
+    if (title) updateFields.title = title;
+    if (reps !== undefined) updateFields.reps = reps;
+    if (load !== undefined) updateFields.load = load;
+
+    // Update the workout
+    const result = await Workout.findByIdAndUpdate(id, updateFields, { new: true });
+
     if (!result) {
       return res.status(404).json({ message: "Workout not found." });
     }
-    return res.status(200).send({ message: "Successfully updated!" });
+
+    return res.status(200).send({ message: "Successfully updated!", workout: result });
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: error.message });
   }
 };
+
 
 /*  Delete a workout */
 export const deleteWorkout = async (req, res) => {

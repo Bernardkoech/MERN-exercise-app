@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
-import { Container, Form, Button } from "react-bootstrap";
+import { Container, Form, Button, Alert } from "react-bootstrap";
+import { FaArrowLeft } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const CreateWorkouts = () => {
   const [formData, setFormData] = useState({
@@ -8,6 +10,7 @@ const CreateWorkouts = () => {
     reps: "",
     load: ""
   });
+  const [showAlert, setShowAlert] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,9 +26,13 @@ const CreateWorkouts = () => {
       .post("/api/workouts", formData)
       .then((response) => {
         console.log("Workout created successfully:", response.data);
-        // Optionally, you can redirect the user or perform any other action upon successful creation
+        setShowAlert(true); // Show the alert
+        setFormData({  // Clear the form data
+          title: "",
+          reps: "",
+          load: ""
+        });
       })
-      setFormData("")
       .catch((err) => {
         console.error("Error creating workout:", err);
       });
@@ -34,6 +41,9 @@ const CreateWorkouts = () => {
   return (
     <Container>
       <h1 className="text-center mt-4">Create Workout</h1>
+      <Link to="/" className="btn btn-outline-primary mb-3">
+        <FaArrowLeft /> Back
+      </Link>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="title">
           <Form.Label>Title</Form.Label>
@@ -66,9 +76,15 @@ const CreateWorkouts = () => {
           />
         </Form.Group>
         <br />
-        <Button variant="dark" type="submit" >
+        <Button variant="dark" type="submit">
           Submit
         </Button>
+        {/* Display alert when workout is created successfully */}
+        {showAlert && (
+          <Alert variant="success" className="mt-3">
+            Workout created successfully!
+          </Alert>
+        )}
       </Form>
     </Container>
   );
